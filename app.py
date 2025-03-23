@@ -47,6 +47,7 @@ cadena_perfil = LLMChain(llm=llm, prompt=prompt_perfil)
 if "historial" not in st.session_state:
     st.session_state.historial = []
     st.session_state.contador = 0
+    st.session_state.reacciones = []
 
 st.title("Chatbot de Análisis de Sentimiento")
 
@@ -63,6 +64,7 @@ if st.session_state.contador < len(noticias):
     user_input = st.chat_input("Escribe tu respuesta aquí...")
     if user_input:
         st.session_state.historial.append({"tipo": "user", "contenido": user_input})
+        st.session_state.reacciones.append(user_input)
         analisis_reaccion = cadena_reaccion.run(reaccion=user_input)
         if len(user_input.split()) < 5:
             with st.chat_message("bot"):
@@ -72,7 +74,7 @@ if st.session_state.contador < len(noticias):
             st.session_state.contador += 1
             st.rerun()
 else:
-    analisis_total = "\n".join([msg["contenido"] for msg in st.session_state.historial if msg["tipo"] == "user"])
+    analisis_total = "\n".join(st.session_state.reacciones)
     perfil = cadena_perfil.run(analisis=analisis_total)
     with st.chat_message("bot"):
         st.write(f"**Perfil del inversor:** {perfil}")
