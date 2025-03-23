@@ -48,6 +48,7 @@ if "historial" not in st.session_state:
     st.session_state.historial = []
     st.session_state.contador = 0
     st.session_state.reacciones = []
+    st.session_state.mostrada_noticia = False
 
 st.title("Chatbot de Análisis de Sentimiento")
 
@@ -56,10 +57,12 @@ for mensaje in st.session_state.historial:
         st.write(mensaje["contenido"])
 
 if st.session_state.contador < len(noticias):
-    noticia = noticias[st.session_state.contador]
-    with st.chat_message("bot"):
-        st.write(f"¿Qué opinas sobre esta noticia? {noticia}")
-    st.session_state.historial.append({"tipo": "bot", "contenido": noticia})
+    if not st.session_state.mostrada_noticia:
+        noticia = noticias[st.session_state.contador]
+        with st.chat_message("bot"):
+            st.write(f"¿Qué opinas sobre esta noticia? {noticia}")
+        st.session_state.historial.append({"tipo": "bot", "contenido": noticia})
+        st.session_state.mostrada_noticia = True
 
     user_input = st.chat_input("Escribe tu respuesta aquí...")
     if user_input:
@@ -72,6 +75,7 @@ if st.session_state.contador < len(noticias):
             st.session_state.historial.append({"tipo": "bot", "contenido": "Podrías ampliar un poco más tu opinión?"})
         else:
             st.session_state.contador += 1
+            st.session_state.mostrada_noticia = False
             st.rerun()
 else:
     analisis_total = "\n".join(st.session_state.reacciones)
@@ -114,7 +118,6 @@ else:
     # Abrir la hoja de cálculo
     sheet = client.open('BBDD_RESPUESTAS').sheet1
 
-    
     # Construir una sola fila con todas las respuestas
     fila = st.session_state.reacciones[:]  # Solo guardar las reacciones
     
