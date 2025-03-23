@@ -33,7 +33,6 @@ noticias = [
     "Las aportaciones a los planes de pensiones caen 10.000 millones en los últimos cuatro años",
 ]
 
-
 plantilla_reaccion = """
 Reacción del inversor: {reaccion}
 Analiza el sentimiento y la preocupación expresada:
@@ -65,7 +64,7 @@ for mensaje in st.session_state.historial:
 if st.session_state.contador < len(noticias):
     if not st.session_state.mostrada_noticia:
         noticia = noticias[st.session_state.contador]
-        with st.chat_message("bot"):
+        with st.chat_message("bot", avatar=""): # Aquí se cambia el icono a robot
             st.write(f"¿Qué opinas sobre esta noticia? {noticia}")
         st.session_state.historial.append({"tipo": "bot", "contenido": noticia})
         st.session_state.mostrada_noticia = True
@@ -76,7 +75,7 @@ if st.session_state.contador < len(noticias):
         st.session_state.reacciones.append(user_input)
         analisis_reaccion = cadena_reaccion.run(reaccion=user_input)
         if len(user_input.split()) < 5:
-            with st.chat_message("bot"):
+            with st.chat_message("bot", avatar=""): # Aquí se cambia el icono a robot
                 st.write("Podrías ampliar un poco más tu opinión?")
             st.session_state.historial.append({"tipo": "bot", "contenido": "Podrías ampliar un poco más tu opinión?"})
         else:
@@ -86,7 +85,7 @@ if st.session_state.contador < len(noticias):
 else:
     analisis_total = "\n".join(st.session_state.reacciones)
     perfil = cadena_perfil.run(analisis=analisis_total)
-    with st.chat_message("bot"):
+    with st.chat_message("bot", avatar=""): # Aquí se cambia el icono a robot
         st.write(f"**Perfil del inversor:** {perfil}")
     st.session_state.historial.append({"tipo": "bot", "contenido": f"**Perfil del inversor:** {perfil}"})
 
