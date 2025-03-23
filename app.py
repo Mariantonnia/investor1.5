@@ -7,6 +7,7 @@ import os
 import re
 import json
 from dotenv import load_dotenv
+import matplotlib.pyplot as plt
 
 load_dotenv()
 
