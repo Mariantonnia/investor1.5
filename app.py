@@ -35,7 +35,21 @@ noticias = [
 
 plantilla_reaccion = """
 Reacción del inversor: {reaccion}
-Analiza el sentimiento y la preocupación expresada:
+Analiza el sentimiento y la preocupación expresada.  
+Clasifica la preocupación principal en una de estas categorías:  
+- Ambiental  
+- Social  
+- Gobernanza  
+- Riesgo  
+
+Si la respuesta es demasiado breve o poco clara, solicita más detalles de manera específica.  
+
+Luego, genera una pregunta de seguimiento enfocada en la categoría detectada para profundizar en la opinión del inversor.  
+Por ejemplo:  
+- Si la categoría es Ambiental: "¿Cómo crees que esto afecta la sostenibilidad del sector?"  
+- Si la categoría es Social: "¿Crees que esto puede afectar la percepción pública de la empresa?"  
+- Si la categoría es Gobernanza: "¿Este evento te hace confiar más o menos en la gestión de la empresa?"  
+- Si la categoría es Riesgo: "¿Consideras que esto aumenta la incertidumbre en el mercado?" 
 """
 prompt_reaccion = PromptTemplate(template=plantilla_reaccion, input_variables=["reaccion"])
 cadena_reaccion = LLMChain(llm=llm, prompt=prompt_reaccion)
